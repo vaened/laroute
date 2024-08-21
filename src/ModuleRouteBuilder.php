@@ -15,8 +15,6 @@ use Vaened\Support\Types\ArrayList;
 
 final readonly class ModuleRouteBuilder
 {
-    const ANY = '*';
-
     private ArrayList $laravelRoutes;
 
     public function __construct(
@@ -46,9 +44,9 @@ final readonly class ModuleRouteBuilder
     private function pair(ArrayList $routes): callable
     {
         return function (ArrayList $acc, string $match) use ($routes) {
-            $filtered = $match === self::ANY
-                ? $routes
-                : $routes->filter(fn(LaravelRoute $route) => $this->matcher->matches($route->uri(), $match));
+            $filtered = $routes->filter(
+                fn(LaravelRoute $route) => $this->matcher->matches($route->uri(), $match)
+            );
 
             $acc->push($filtered, $match);
             return $acc;

@@ -12,8 +12,10 @@ use Vaened\Laroute\RouteMatcher;
 
 final readonly class StartsWithRouteMatcher implements RouteMatcher
 {
+    const ANY = '*';
+
     public function matches(string $fullUri, string $pattern): bool
     {
-        return Str::startsWith($fullUri, $pattern);
+        return self::ANY === $pattern || Str::startsWith($fullUri, $pattern);
     }
 }
