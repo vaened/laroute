@@ -38,7 +38,7 @@ final readonly class ModulesProvider
             $config['match'],
             $config['rootUrl'] ?? config('app.url'),
             $config['name'],
-            $config['prefix'],
+            $config['prefix'] ?? '',
             $config['path'],
             $config['absolute']
         );
