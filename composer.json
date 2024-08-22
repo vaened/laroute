@@ -34,5 +34,12 @@
     "phpunit/phpunit": "^10.4",
     "orchestra/testbench": "^8|^9",
     "mockery/mockery": "^1.6"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Vaened\\Laroute\\LarouteServiceProvider"
+      ]
+    }
   }
 }
