@@ -1,5 +1,7 @@
 # Laroute
 
+[![Build Status](https://github.com/vaened/laroute/actions/workflows/tests.yml/badge.svg)](https://github.com/vaened/laroute/actions?query=workflow:Tests) [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](license)
+
 `vaened\laroute` is a PHP library inspired by [aaronlord/laroute](https://github.com/aaronlord/laroute), designed to help Laravel developers
 manage their application’s routes in `JavaScript` without the need to hardcode `URLs`. This library goes a step further by introducing
 modular routing, allowing you to separate
