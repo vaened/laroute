@@ -6,7 +6,7 @@ modular routing, allowing you to separate
 routes based on URL patterns into different modules. Each module generates its own `JSON` file, making it easier to manage and scale your
 application’s routing structure.
 
-![routes example](https://github.com/user-attachments/assets/76a24d08-fc95-40da-b30a-b642e1364ffc)
+![routes example](https://github.com/user-attachments/assets/fd9b1736-9d3d-42f7-afd3-64b6c5eae5c1)
 
 ## Installation
 
