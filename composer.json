@@ -13,6 +13,11 @@
       "Vaened\\Laroute\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Vaened\\Laroute\\Tests\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "Enea Dhack",

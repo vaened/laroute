@@ -10,8 +10,7 @@ application’s routing structure.
 
 ## Installation
 
-Laravception requires PHP 8.2.
-To get the latest version, simply require the project using Composer:
+Laroute requires PHP 8.2. To get the latest version, simply require the project using Composer:
 
 ```bash
 composer require vaened/laroute
