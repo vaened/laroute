@@ -45,8 +45,8 @@ abstract class TestCase extends BaseTestCase
 
             $router->group(['prefix' => 'admin/products'], function ($router) {
                 $router->post('{id}', static fn() => [])->name('admin.products.create');
-                $router->patch('{id}', static fn() => [])->name('store.products.update');
-                $router->get('{id}', static fn() => [])->name('store.products.show');
+                $router->patch('{id}', static fn() => [])->name('admin.products.update');
+                $router->get('{id}', static fn() => [])->name('admin.products.show');
             });
 
             $router->group(['prefix' => 'admin/users'], function ($router) {
