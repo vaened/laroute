@@ -16,10 +16,138 @@ Laroute requires PHP 8.2. To get the latest version, simply require the project 
 composer require vaened/laroute
 ```
 
-Now. Publish the configuration file.
+Publish the configuration file.
 
 ```bash
 php artisan vendor:publish --tag='laroute'
+```
+
+Now, generate the routes based on your configuration and export the JavaScript service.
+
+```bash
+php artisan laroute:generate
+```
+
+## Usage
+
+The library includes the necessary `javascript` service to interpret the `JSON` routes, along with its corresponding `d.ts` type definitions
+for `typescript`.
+
+> The location of the service is configured in the library option within the configuration file.
+
+### Javascript / Typescript
+
+Once the service is exported to the location defined in the configuration file, you can easily create a new file and export the service
+creation by passing the JSON file containing the routes as a parameter.
+
+```typescript
+import {createRouteService} from "./laroute";
+import apiConfig from "./api.json";
+
+const apiRouteService = createRouteService(apiConfig);
+```
+
+With this, you’re ready to start.
+
+```typescript
+const response = await fetch(apiRouteService.completeURI('store.products.lists'))
+const data = response.json();
+console.log(data)
+```
+
+### Service
+
+The route service provides three key methods to interact with the generated JSON routes:
+
+- **completeURI(name, ?params)**: Generates a full URL, including any query string parameters.
+
+```typescript
+apiRouteService.completeURI('admin.products.create', {
+    id: '80768395-4208-4fd7-ac60-c429717014ab',
+    name: 'Notebook'
+})
+```
+
+> Returns `{host}/api/admin/products/80768395-4208-4fd7-ac60-c429717014ab?name=Notebook`
+
+- **cleanURI(name, ?params)**:Generates a full URL without any query string.
+
+```typescript
+apiRouteService.cleanURI('admin.products.update', {
+    id: '80768395-4208-4fd7-ac60-c429717014ab',
+    name: 'Notebook'
+})
+```
+
+> Returns `{host}/api/admin/products/80768395-4208-4fd7-ac60-c429717014ab`
+
+- **has(name)**: Checks if a specific route is defined within the service.
+
+```typescript
+apiRouteService.has('admin.products.list')
+```
+
+> Returns `true` if the route exists, `false` otherwise.
+
+### Best Practices
+
+It's recommended to create a separate file to manage API calls. You could create a file named `axiosRouter.{ts, js}` and export something
+like this:
+
+```typescript
+import createRouteService, {Parameters} from "./laroute";
+import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
+import api from "./api.json";
+
+const apiRouteService = createRouteService(api);
+
+export const Router = {
+    get(routeName: string, params: Parameters = {}, config: AxiosRequestConfig = {}) {
+        return axios.get(apiRouteService.cleanURI(routeName, params), {params, ...config});
+    },
+
+    post(routeName: string, params: Parameters = {}, config: AxiosRequestConfig = {}) {
+        return axios.post(apiRouteService.cleanURI(routeName, params), params, config);
+    },
+
+    patch(routeName: string, params: Parameters = {}, config: AxiosRequestConfig = {}) {
+        return axios.patch(apiRouteService.cleanURI(routeName, params), params, config);
+    },
+    // ...
+};
+```
+
+## Configuration
+
+The default configuration should be sufficient for most projects, allowing you to simply export the routes and start working without any
+additional setup.
+
+> For customization options, refer to the comments in the configuration file [laroute.php](./config/laroute.php).
+
+### Advanced
+
+For larger projects, where different clients consume the API, you can configure the route export in a modular way. This allows you to create
+as many modules as needed, each corresponding to different URL segments.
+
+For example, you could have a module for `/api/store` and another for `/api/admin`, which would generate two separate route files.
+
+```php
+'modules' => [
+  [  
+    'match'    => '/api/store',
+    'name'     => 'store',
+    'rootUrl'  => 'https://store.aplication.com',  
+    'absolute' => true,
+    'path'     => 'resources/routes',
+  ],  
+  [  
+    'match'    => '/api/admin',
+    'name'     => 'admin',
+    'rootUrl'  => 'https://admin.aplication.com',
+    'absolute' => true,
+    'path'     => 'resources/routes',
+  ],
+  ]
 ```
 
 ## Features
@@ -34,3 +162,7 @@ php artisan vendor:publish --tag='laroute'
   are constructed.
 - **Flexible Configuration**: Easily configure modules and route matching criteria to fit the needs of your project, whether it’s a
   monolithic application or a modular one.
+
+## License
+
+This library is licensed under the MIT License. For more information, please see the [`license`](./license) file.
