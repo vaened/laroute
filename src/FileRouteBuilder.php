@@ -8,7 +8,7 @@ namespace Vaened\Laroute;
 use Closure;
 use Illuminate\Routing\Route as LaravelRoute;
 use Illuminate\Routing\Router as LaravelRouter;
-use Vaened\Laroute\Items\{Module};
+use Vaened\Laroute\Items\{File, Module};
 use Vaened\Laroute\Items\Route;
 use Vaened\Support\Types\AbstractList;
 use Vaened\Support\Types\ArrayList;
@@ -26,14 +26,15 @@ final readonly class ModuleRouteBuilder
         $this->laravelRoutes = new ArrayList($router->getRoutes()->getRoutes());
     }
 
-    public function modules(): ArrayList
+    public function files(): ArrayList
     {
         $routes          = $this->laravelRoutes->filter($this->onlyNamed());
         $modules         = $this->provider->modules();
         $matches         = $modules->matches();
         $routeCollection = $matches->reduce($this->pair($routes), new ArrayList(AbstractList::Empty));
 
-        return $this->provider->modules()->map(self::attach($routeCollection));
+        return $this->provider->modules()
+                              ->map(self::toRoutesFile($routeCollection));
     }
 
     private function onlyNamed(): Closure
@@ -53,19 +54,28 @@ final readonly class ModuleRouteBuilder
         };
     }
 
-    private static function attach(ArrayList $routeCollection): callable
+    private static function toRoutesFile(ArrayList $routeCollection): callable
     {
-        return function (Module $module) use ($routeCollection) {
+        return function (Module $module) use ($routeCollection): File {
             $routes = $routeCollection->pick(self::matchedWith($module));
-            $module->setRoutes($routes->map(self::toRoute()));
 
-            return $module;
+            return new File(
+                $module,
+                $routes->map(self::createRouteFor($module))
+            );
         };
     }
 
-    private static function toRoute(): Closure
+    private static function createRouteFor(Module $module): Closure
     {
-        return fn(LaravelRoute $route): Route => new Route($route->getName(), $route->uri(), $route->domain());
+        return fn(LaravelRoute $route): Route => new Route(
+            $route->getName(),
+            $module->rootUrl(),
+            $route->uri(),
+            $module->prefix(),
+            $module->absolute(),
+            $route->domain()
+        );
     }
 
     private static function matchedWith(Module $module): callable
