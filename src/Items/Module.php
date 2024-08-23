@@ -43,9 +43,19 @@ class Module implements Arrayable, Jsonable
         return $this->match;
     }
 
+    public function rootUrl(): string
+    {
+        return $this->rootUrl;
+    }
+
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function prefix(): string
+    {
+        return $this->prefix;
     }
 
     public function path(): string
@@ -53,6 +63,11 @@ class Module implements Arrayable, Jsonable
         return $this->path;
     }
 
+    public function absolute(): bool
+    {
+        return $this->absolute;
+    }
+    
     public function toArray(): array
     {
         return [

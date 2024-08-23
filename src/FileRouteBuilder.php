@@ -13,7 +13,7 @@ use Vaened\Laroute\Items\Route;
 use Vaened\Support\Types\AbstractList;
 use Vaened\Support\Types\ArrayList;
 
-final readonly class ModuleRouteBuilder
+final readonly class FileRouteBuilder
 {
     private ArrayList $laravelRoutes;
 

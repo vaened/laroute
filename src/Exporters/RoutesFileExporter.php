@@ -10,6 +10,7 @@ namespace Vaened\Laroute\Exporters;
 use Illuminate\Filesystem\Filesystem;
 use Throwable;
 use Vaened\Laroute\FileRouteBuilder;
+use Vaened\Laroute\Items\File;
 use Vaened\Laroute\Items\Module;
 use Vaened\Laroute\LarouteException;
 
@@ -27,16 +28,16 @@ final readonly class RoutesFileExporter
     public function publish(): void
     {
         $this->fileRouteBuilder->files()
-                               ->each(fn(Module $module) => $this->export($module));
+                               ->each(fn(File $file) => $this->export($file));
     }
 
-    private function export(Module $module): void
+    private function export(File $file): void
     {
         try {
-            $this->filesystem->makeDirectory($module->path(), 0755, true, true);
-            $this->filesystem->put(self::createFileFor($module), $module->toJson());
+            $this->filesystem->makeDirectory($file->module()->path(), 0755, true, true);
+            $this->filesystem->put(self::createFileFor($file->module()), $file->module()->toJson());
         } catch (Throwable $error) {
-            throw LarouteException::cantExportModule($module->name(), $error);
+            throw LarouteException::cantExportModule($file->module()->name(), $error);
         }
     }
 

@@ -5,24 +5,42 @@
 
 namespace Vaened\Laroute\Items;
 
-use Illuminate\Contracts\Support\{Arrayable, Jsonable};
+use function array_filter;
 
-class Route implements Arrayable, Jsonable
+readonly class Route
 {
-    private array $segments;
-
-    public function __construct(string $name, string $uri, ?string $host)
+    public function __construct(
+        private string  $name,
+        private string  $rootUrl,
+        private string  $uri,
+        private ?string $prefix,
+        private bool    $absolute,
+        private ?string $host
+    )
     {
-        $this->segments = compact('name', 'uri', 'host');
     }
 
-    public function toArray(): array
+    public function name(): string
     {
-        return $this->segments;
+        return $this->name;
     }
 
-    public function toJson($options = 0): string
+    public function host(): string
     {
-        return json_encode($this->toArray(), $options);
+        return $this->absolute ? ($this->host ?? $this->rootUrl) : '';
+    }
+
+    public function uri(): string
+    {
+        $segments = array_filter([$this->prefix, $this->uri]);
+        return implode('/', $segments);
+    }
+
+    public function primitives(): array
+    {
+        return [
+            'host' => $this->host(),
+            'uri'  => $this->uri(),
+        ];
     }
 }
