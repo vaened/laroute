@@ -33,8 +33,9 @@ final readonly class FileRouteBuilder
         $matches         = $modules->matches();
         $routeCollection = $matches->reduce($this->pair($routes), new ArrayList(AbstractList::Empty));
 
-        return $this->provider->modules()
-                              ->map(self::toRoutesFile($routeCollection));
+        return $this->provider
+            ->modules()
+            ->map(self::toRoutesFile($routeCollection));
     }
 
     private function onlyNamed(): Closure
@@ -59,7 +60,7 @@ final readonly class FileRouteBuilder
         return function (Module $module) use ($routeCollection): File {
             $routes = $routeCollection->pick(self::matchedWith($module));
 
-            return new File(
+            return File::from(
                 $module,
                 $routes->map(self::createRouteFor($module))
             );
