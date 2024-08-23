@@ -47,8 +47,8 @@ return [
     | modules. If a specific module has its own 'output' configuration, that
     | value will override this default for that module.
     |
-    | json        - Generates route files in JSON format.
-    | typescript  - Generates route files in TypeScript format.
+    | json  - Generates route files in JSON format.
+    | ts    - Generates route files in TypeScript format.
     |
     */
     'output'  => 'json',
