@@ -32,7 +32,7 @@ final readonly class RoutesFileExporter
     {
         $this->filesNormalizer
             ->normalize($this->fileRouteBuilder->files())
-            ->each(fn(File $file) => $this->export($file));
+            ->each($this->export(...));
     }
 
     private function export(File $file): void
