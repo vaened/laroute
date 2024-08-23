@@ -13,8 +13,6 @@ use Vaened\Support\Types\ArrayList;
 
 final readonly class SingleFileNormalizer implements Normalizer
 {
-    const FILE_NAME = 'api-routes';
-
     public function __construct(
         private LarouteConfig $config,
     )
@@ -25,8 +23,8 @@ final readonly class SingleFileNormalizer implements Normalizer
     {
         return new ArrayList([
             new File(
-                self::FILE_NAME,
-                $this->config->libraryPath(),
+                $this->config->defaultSingleFileModuleName(),
+                $this->config->defaultSingleFileOutputPath(),
                 $this->config->defaultOutputType(),
                 $files->flatMap(static fn(File $file) => $file->routes())
             )
