@@ -30,11 +30,11 @@ final readonly class RouteServiceExporter
 
             $this->filesystem->put(
                 join_paths($this->config->libraryPath(), 'laroute.js'),
-                $this->filesystem->get(join_paths($this->config->resourcesPath(), 'laroute.js'))
+                $this->filesystem->get(join_paths($this->config->resourcesPath(), 'laroute.stub'))
             );
             $this->filesystem->put(
                 join_paths($this->config->libraryPath(), 'laroute.d.ts'),
-                $this->filesystem->get(join_paths($this->config->resourcesPath(), 'laroute.d.ts'))
+                $this->filesystem->get(join_paths($this->config->resourcesPath(), 'laroute.d.stub'))
             );
         } catch (Throwable $error) {
             throw LarouteException::cantOverrideLibrary($error);
