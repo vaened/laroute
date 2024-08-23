@@ -20,6 +20,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Split Routes into Multiple Files
+    |--------------------------------------------------------------------------
+    |
+    | This option controls whether the routes for each module should be
+    | generated into separate files, or if all routes should be
+    | combined into a single file.
+    |
+    | true  - Creates a separate JSON file for each module. The file name
+    |         will be the same as the module's name (e.g., 'store.{json, ts}',
+    |         'admin.{json, ts}').
+    |
+    | false - Combines all routes from all modules into a single file
+    |         named 'api-routes.{json, ts}'.
+    |
+    */
+    'split'   => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Output Format
     |--------------------------------------------------------------------------
     |

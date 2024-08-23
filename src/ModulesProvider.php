@@ -22,7 +22,7 @@ final readonly class ModulesProvider
         $this->validateDuplicates($modules);
 
         return new Modules(
-            $modules->map(self::createModule())
+            $modules->map($this->createModule())
         );
     }
 
@@ -32,15 +32,16 @@ final readonly class ModulesProvider
                 ->some(self::throwException());
     }
 
-    private static function createModule(): callable
+    private function createModule(): callable
     {
-        return static fn(array $config) => new Module(
-            $config['match'],
+        return fn(array $config) => new Module(
+            $config['match'] ?? '*',
             $config['rootUrl'] ?? config('app.url'),
             $config['name'],
             $config['prefix'] ?? '',
-            $config['path'],
-            $config['absolute']
+            $config['path'] ?? $this->config->libraryPath(),
+            $config['output'] ?? $this->config->defaultOutputType(),
+            $config['absolute'] ?? true
         );
     }
 
