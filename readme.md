@@ -8,7 +8,7 @@ modular routing, allowing you to separate routes based on URL patterns into diff
 making it easier to manage and scale your application’s routing structure.
 
 <a href="#">
-    <img src="./.github/images/routes-example.jpg" alt="routes-example"/>
+    <img src=".github/images/routes-example.jpg" alt="routes-example"/>
 </a>
 
 ## Installation
@@ -58,6 +58,13 @@ const response = await fetch(apiRouteService.generateFullURL('store.products.lis
 const data = response.json();
 console.log(data)
 ```
+
+Additionally, you can export the routes as a TypeScript file to enable route autocompletion in your editor. To achieve this, simply modify
+the `output` option in the configuration file.
+
+<a href="#" s>  
+    <img src=".github/images/autocomplete-route-name.gif" alt="routes-example"/>  
+</a>
 
 ### Service
 
