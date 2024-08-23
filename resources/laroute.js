@@ -1,15 +1,16 @@
-export function createRouteService({rootUrl, prefix, absolute, routes}) {
+export function createRouteService({routes}) {
     const laroute = {
         create(name, parameters, options = {withQueryString: true}) {
-            const route = this.getByName(name);
+            const route = this.find(name);
             const hostname = this.getHostname(route);
-            const urn = this.replaceNamedParameters(route.uri, parameters);
-            const qs = options.withQueryString ? this.getRouteQueryString(parameters) : "";
-            return this.buildUri(hostname, urn, qs);
+            const path = this.replaceNamedParameters(route.uri, parameters);
+            const qs = options.withQueryString ? this.getRouteQueryString(parameters) : null;
+
+            return this.buildUri(hostname, path, qs);
         },
 
-        getByName(name) {
-            const route = routes.find((route) => route.name === name);
+        find(name) {
+            const route = routes[name] ?? undefined;
 
             if (route === undefined) {
                 throw new Error(`Not found route: ${name}`);
@@ -19,10 +20,7 @@ export function createRouteService({rootUrl, prefix, absolute, routes}) {
         },
 
         getHostname(route) {
-            if (absolute) {
-                return route.host === undefined ? rootUrl : `///${route.host}`;
-            }
-            return "";
+            return route.absolute ? route.host : "";
         },
 
         replaceNamedParameters(uri, parameters) {
@@ -45,15 +43,11 @@ export function createRouteService({rootUrl, prefix, absolute, routes}) {
                 .join("&");
         },
 
-        buildUri(hostname, urn, queryString) {
+        buildUri(hostname, path, queryString) {
             const removeForwardSlashes = (fragment) => fragment.replace(/(^\/?)|(\/?$)/g, "");
-            const notEmpty = (fragment) => fragment != null && fragment !== "";
-            const fragments = [prefix, urn]
-                .filter(notEmpty)
-                .map(removeForwardSlashes)
-                .join("/");
+            const url = `${removeForwardSlashes(hostname)}/${removeForwardSlashes(path)}`;
 
-            return `${removeForwardSlashes(hostname)}/${fragments}${queryString ?? "?" + queryString}`;
+            return [url, queryString].filter((s) => s).join("?");
         },
 
         hasRoute(name) {
