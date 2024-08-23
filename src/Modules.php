@@ -20,8 +20,6 @@ final class Modules extends SecureList
 
     public function matches(): ArrayList
     {
-        return new ArrayList(
-            $this->map(fn(Module $module) => $module->match())
-        );
+        return $this->map(fn(Module $module) => $module->match());
     }
 }
