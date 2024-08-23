@@ -7,7 +7,9 @@ manage their application’s routes in `JavaScript` without the need to hardcode
 modular routing, allowing you to separate routes based on URL patterns into different modules. Each module generates its own routes file,
 making it easier to manage and scale your application’s routing structure.
 
-![routes-example](./.github/images/routes-example.jpg)
+<a href="#">
+    <img src="./.github/images/routes-example.jpg" alt="routes-example"/>
+</a>
 
 ## Installation
 
