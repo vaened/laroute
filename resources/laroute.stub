@@ -61,10 +61,7 @@ export class RouteService {
   }
 
   #buildUri(hostname, path, queryString) {
-    const removeForwardSlashes = (fragment) => fragment.replace(/(^\/?)|(\/?$)/g, "");
-    const url = `${removeForwardSlashes(hostname)}/${removeForwardSlashes(path)}`;
-
-    return [url, queryString].filter((s) => s).join("?");
+    return [`${hostname}/${path}`, queryString].filter((s) => s).join("?");
   }
 }
 

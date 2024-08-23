@@ -27,12 +27,16 @@ readonly class Route
 
     public function host(): string
     {
-        return $this->absolute ? ($this->host ?? $this->rootUrl) : '';
+        return $this->absolute ? self::removeForwardSlashes($this->host ?? $this->rootUrl) : '';
     }
 
     public function uri(): string
     {
-        $segments = array_filter([$this->prefix, $this->uri]);
+        $segments = array_filter([
+            self::removeForwardSlashes($this->prefix),
+            self::removeForwardSlashes($this->uri)
+        ]);
+
         return implode('/', $segments);
     }
 
@@ -42,5 +46,10 @@ readonly class Route
             'host' => $this->host(),
             'uri'  => $this->uri(),
         ];
+    }
+
+    private static function removeForwardSlashes(string $fragment): string
+    {
+        return preg_replace('/(^\/?)|(\/?$)/', '', $fragment);
     }
 }
