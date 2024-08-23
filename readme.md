@@ -102,8 +102,8 @@ apiRouteService.has('admin.products.list')
 
 ### Best Practices
 
-It's recommended to create a separate file to manage API calls. You could create a file named `axiosRouter.{ts, js}` and export something
-like this:
+To efficiently manage API calls, it’s advisable to create a dedicated file. You might name it `Router.{ts, js}`. In this file, you can
+utilize `fetch` or a library like `axios` to streamline your API interactions. An example of what you might export could look like this:
 
 ```typescript
 import createRouteService, {Parameters} from "./laroute";
