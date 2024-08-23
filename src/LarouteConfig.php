@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Vaened\Laroute;
 
+use Vaened\Laroute\Items\FileType;
+
 final readonly class LarouteConfig
 {
     public function __construct(private array $config)
@@ -16,6 +18,16 @@ final readonly class LarouteConfig
     public function libraryPath(): string
     {
         return $this->config['library'] ?? 'resources/routes';
+    }
+
+    public function splitModulesInFiles(): bool
+    {
+        return $this->config['split'] ?? true;
+    }
+
+    public function defaultOutputType(): FileType
+    {
+        return FileType::fromString($this->config['output'] ?? 'json');
     }
 
     public function resourcesPath(): string

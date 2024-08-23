@@ -5,37 +5,26 @@
 
 namespace Vaened\Laroute\Items;
 
-use Illuminate\Contracts\Support\{Arrayable, Jsonable};
-use Vaened\Support\Types\ArrayList;
-
 use function ltrim;
 
-class Module implements Arrayable, Jsonable
+final readonly class Module
 {
-    private ArrayList       $routes;
+    private string   $match;
 
-    private readonly string $match;
+    private FileType $type;
 
     public function __construct(
-        string                  $match,
-        private readonly string $rootUrl,
-        private readonly string $name,
-        private readonly string $prefix,
-        private readonly string $path,
-        private readonly bool   $absolute
+        string          $match,
+        private string  $rootUrl,
+        private string  $name,
+        private string  $prefix,
+        private string  $path,
+        FileType|string $output,
+        private bool    $absolute
     )
     {
         $this->match = ltrim($match, '/');
-    }
-
-    public function routes(): ArrayList
-    {
-        return $this->routes;
-    }
-
-    public function setRoutes(ArrayList $routes): void
-    {
-        $this->routes = $routes;
+        $this->type  = $output instanceof FileType ? $output : FileType::fromString($output);
     }
 
     public function match(): string
@@ -63,28 +52,13 @@ class Module implements Arrayable, Jsonable
         return $this->path;
     }
 
+    public function output(): FileType
+    {
+        return $this->type;
+    }
+
     public function absolute(): bool
     {
         return $this->absolute;
-    }
-    
-    public function toArray(): array
-    {
-        return [
-            'rootUrl'  => $this->rootUrl,
-            'prefix'   => $this->prefix,
-            'absolute' => $this->absolute,
-            'routes'   => $this->routes->map(self::serialize())->items(),
-        ];
-    }
-
-    public function toJson($options = 0): string
-    {
-        return json_encode($this->toArray(), $options);
-    }
-
-    private static function serialize(): callable
-    {
-        return static fn(Route $route) => $route->toArray();
     }
 }

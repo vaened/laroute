@@ -31,4 +31,9 @@ final class LarouteException extends RuntimeException
         $errorMessage = $previous?->getMessage() ?? 'unknown';
         return new self("Could not override library: $errorMessage", $previous?->getCode() ?? 0, $previous);
     }
+
+    public static function unsupportedOutputType(string $type): self
+    {
+        return new self("Unsupported output type: $type");
+    }
 }

@@ -11,7 +11,7 @@ return [
     |
     | Specifies the directory where the main JavaScript library will be
     | published. This is the location where the library or service that will
-    | use the exported routes will be saved. The generated JSON files containing
+    | use the exported routes will be saved. The generated files containing
     | the routes will be used by this library, typically within your application's
     | resources directory.
     |
@@ -20,11 +20,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Output Format
+    |--------------------------------------------------------------------------
+    |
+    | This option specifies the format of the route files. Supported formats
+    | are 'json' and 'typescript'. By default, this setting applies to all
+    | modules. If a specific module has its own 'output' configuration, that
+    | value will override this default for that module.
+    |
+    | json        - Generates route files in JSON format.
+    | typescript  - Generates route files in TypeScript format.
+    |
+    */
+    'output'  => 'json',
+
+    /*
+    |--------------------------------------------------------------------------
     | Modules Configuration
     |--------------------------------------------------------------------------
     |
     | Define the configuration for each module. Each module has its own set of
-    | routes and settings for generating the corresponding JSON file.
+    | routes and settings for generating the corresponding routes file.
     |
     */
     'modules' => [
@@ -86,14 +102,14 @@ return [
             | By default, this value is an empty string, meaning no prefix will be added.
             |
             */
-            'prefix'   => '',
+            'prefix'   => null,
 
             /*
             |--------------------------------------------------------------------------
             | Destination Path
             |--------------------------------------------------------------------------
             |
-            | This value determines the path where the generated JSON file will be
+            | This value determines the path where the generated routes file will be
             | stored. Typically, this will be within your resources' directory.
             |
             */
