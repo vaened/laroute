@@ -20,7 +20,12 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app): void
     {
         $app->make('config')
-            ->set('laroute.modules', static::modules());
+            ->set('laroute', [
+                'split'   => true,
+                'output'  => 'json',
+                'modules' => static::modules(),
+                ...self::config()
+            ]);
     }
 
     protected function getPackageProviders($app): array
@@ -55,6 +60,11 @@ abstract class TestCase extends BaseTestCase
                 $router->patch('{id}', static fn() => [])->name('admin.users.update');
             });
         });
+    }
+
+    protected static function config(): array
+    {
+        return [];
     }
 
     /**
