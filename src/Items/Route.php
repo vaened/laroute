@@ -5,6 +5,8 @@
 
 namespace Vaened\Laroute\Items;
 
+use Vaened\Laroute\Utils;
+
 use function array_filter;
 
 readonly class Route
@@ -27,14 +29,14 @@ readonly class Route
 
     public function host(): string
     {
-        return $this->absolute ? self::removeForwardSlashes($this->host ?? $this->rootUrl) : '';
+        return $this->absolute ? Utils::removeForwardSlashes($this->host ?? $this->rootUrl) : '';
     }
 
     public function uri(): string
     {
         $segments = array_filter([
-            self::removeForwardSlashes($this->prefix),
-            self::removeForwardSlashes($this->uri)
+            Utils::removeForwardSlashes($this->prefix),
+            Utils::removeForwardSlashes($this->uri)
         ]);
 
         return implode('/', $segments);
@@ -46,10 +48,5 @@ readonly class Route
             'host' => $this->host(),
             'uri'  => $this->uri(),
         ];
-    }
-
-    private static function removeForwardSlashes(string $fragment): string
-    {
-        return preg_replace('/(^\/?)|(\/?$)/', '', $fragment);
     }
 }

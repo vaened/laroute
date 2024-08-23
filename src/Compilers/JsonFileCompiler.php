@@ -9,21 +9,13 @@ namespace Vaened\Laroute\Compilers;
 
 use Vaened\Laroute\Items\File;
 use Vaened\Laroute\Items\Route;
-
-use function json_encode;
-use function str_replace;
+use Vaened\Laroute\Utils;
 
 final readonly class JsonFileCompiler implements Compiler
 {
     public function compile(File $file): string
     {
-        return str_replace(
-            '\/',
-            '/',
-            json_encode(
-                $file->routes()->reduce(self::serialize(...), [])
-            )
-        );
+        return Utils::jsonEncode($file->routes()->reduce(self::serialize(...), []));
     }
 
     public function extension(): string
