@@ -11,13 +11,18 @@ use Vaened\Laroute\Items\File;
 use Vaened\Laroute\Items\Route;
 
 use function json_encode;
+use function str_replace;
 
 final readonly class JsonFileCompiler implements Compiler
 {
     public function compile(File $file): string
     {
-        return json_encode(
-            $file->routes()->reduce(self::serialize(...), [])
+        return str_replace(
+            '\/',
+            '/',
+            json_encode(
+                $file->routes()->reduce(self::serialize(...), [])
+            )
         );
     }
 
