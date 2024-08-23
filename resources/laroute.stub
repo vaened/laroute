@@ -1,79 +1,71 @@
-export function createRouteService({routes}) {
-    const laroute = {
-        create(name, parameters, options = {withQueryString: true}) {
-            const route = this.find(name);
-            const hostname = this.getHostname(route);
-            const path = this.replaceNamedParameters(route.uri, parameters);
-            const qs = options.withQueryString ? this.getRouteQueryString(parameters) : null;
+export class RouteService {
+  #routes;
+  #rootUrl;
 
-            return this.buildUri(hostname, path, qs);
-        },
+  constructor({ routes, rootUrl = null }) {
+    this.#routes = routes;
+    this.#rootUrl = rootUrl;
+  }
 
-        find(name) {
-            const route = routes[name] ?? undefined;
+  has(name) {
+    return this.#routes.some((route) => route.name === name);
+  }
 
-            if (route === undefined) {
-                throw new Error(`Not found route: ${name}`);
-            }
+  createURLWithoutQuery(name, parameters) {
+    return this.#create(name, parameters, { withQueryString: false });
+  }
 
-            return route;
-        },
+  generateFullURL(name, parameters = {}) {
+    return this.#create(name, parameters, { withQueryString: true });
+  }
 
-        getHostname(route) {
-            return route.absolute ? route.host : "";
-        },
+  #create(name, parameters, options = { withQueryString: true }) {
+    const route = this.#find(name);
+    const hostname = this.#getHostname(route);
+    const path = this.#replaceNamedParameters(route.uri, parameters);
+    const qs = options.withQueryString ? this.#getRouteQueryString(parameters) : null;
 
-        replaceNamedParameters(uri, parameters) {
-            uri = uri.replace(/{(.*?)\??}/g, (match, key) => {
-                if (!parameters.hasOwnProperty(key)) {
-                    return match;
-                }
-                const value = parameters[key];
-                delete parameters[key];
-                return value;
-            });
+    return this.#buildUri(hostname, path, qs);
+  }
 
-            // Strip out any optional parameters that were not given
-            return uri.replace(/\/{.[^}]*?\?}/g, "");
-        },
+  #find(name) {
+    const route = this.#routes[name] ?? undefined;
+    if (route === undefined) {
+      throw new Error(`Not found route: ${name}`);
+    }
+    return route;
+  }
 
-        getRouteQueryString(parameters) {
-            return Object.keys(parameters)
-                .map((key) => `${key}=${parameters[key]}`)
-                .join("&");
-        },
+  #getHostname(route) {
+    return this.#rootUrl || route.host;
+  }
 
-        buildUri(hostname, path, queryString) {
-            const removeForwardSlashes = (fragment) => fragment.replace(/(^\/?)|(\/?$)/g, "");
-            const url = `${removeForwardSlashes(hostname)}/${removeForwardSlashes(path)}`;
+  #replaceNamedParameters(uri, parameters) {
+    uri = uri.replace(/{(.*?)\??}/g, (match, key) => {
+      if (!parameters.hasOwnProperty(key)) {
+        return match;
+      }
+      const value = parameters[key];
+      delete parameters[key];
+      return value;
+    });
 
-            return [url, queryString].filter((s) => s).join("?");
-        },
+    // Strip out any optional parameters that were not given
+    return uri.replace(/\/{.[^}]*?\?}/g, "");
+  }
 
-        hasRoute(name) {
-            return routes.some((route) => route.name === name);
-        },
-    };
+  #getRouteQueryString(parameters) {
+    return Object.keys(parameters)
+      .map((key) => `${key}=${parameters[key]}`)
+      .join("&");
+  }
 
-    return {
-        // Check if a route exists  for a given named route.
-        // service.has('routeName')
-        has(name) {
-            return laroute.hasRoute(name);
-        },
+  #buildUri(hostname, path, queryString) {
+    const removeForwardSlashes = (fragment) => fragment.replace(/(^\/?)|(\/?$)/g, "");
+    const url = `${removeForwardSlashes(hostname)}/${removeForwardSlashes(path)}`;
 
-        // Generate an url without GET parameters for a given named route.
-        // service.cleanURI('routeName', [params = {}])
-        cleanURI(name, parameters) {
-            return laroute.create(name, parameters, {withQueryString: false});
-        },
-
-        // Generate an url for a given named route.
-        // service.route('routeName', [params = {}])
-        completeURI(name, parameters = {}) {
-            return laroute.create(name, parameters, {withQueryString: true});
-        },
-    };
+    return [url, queryString].filter((s) => s).join("?");
+  }
 }
 
-export default createRouteService;
+export default RouteService;

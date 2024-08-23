@@ -1,30 +1,41 @@
 export type Name = string;
 
-interface Route {
-    uri: string;
-    host: string | null;
+export interface RouteOptions {
+  withQueryString?: boolean;
+}
+
+export interface Route {
+  uri: string;
+  host: string | null;
 }
 
 export interface LarouteConfig {
-    routes: Record<Name, Route>;
+  rootUrl?: string;
+  routes: Record<Name, Route>;
 }
 
 export type Parameters = Record<string, any>;
 
-export interface RouteService<T extends Name> {
-    // Check if a route exists  for a given named route.
-    // service.has('routeName')
-    has(name: T): boolean;
+export class RouteService<RouteName extends Name> {
+  constructor(config: LarouteConfig);
 
-    // Generate an url without GET parameters for a given named route.
-    // service.cleanURI('routeName', [params = {}])
-    cleanURI(name: T, parameters?: Parameters): string;
+  has(name: RouteName): boolean;
 
-    // Generate an url for a given named route.
-    // service.route('routeName', [params = {}])
-    completeURI(name: T, parameters?: Parameters): string;
+  createURLWithoutQuery(name: RouteName, parameters?: Parameters): string;
+
+  generateFullURL(name: RouteName, parameters?: Parameters): string;
+
+  private create(name: RouteName, parameters: Parameters, options?: RouteOptions): string;
+
+  private find(name: RouteName): Route;
+
+  private getHostname(route: Route): string;
+
+  private replaceNamedParameters(uri: string, parameters: Parameters): string;
+
+  private getRouteQueryString(parameters: Parameters): string;
+
+  private buildUri(hostname: string, path: string, queryString: string): string;
 }
 
-export function createRouteService<T extends Name = string>(config: LarouteConfig): RouteService<T>;
-
-export default createRouteService;
+export default RouteService;
