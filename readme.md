@@ -4,11 +4,10 @@
 
 `vaened\laroute` is a PHP library inspired by [aaronlord/laroute](https://github.com/aaronlord/laroute), designed to help Laravel developers
 manage their application’s routes in `JavaScript` without the need to hardcode `URLs`. This library goes a step further by introducing
-modular routing, allowing you to separate
-routes based on URL patterns into different modules. Each module generates its own `JSON` file, making it easier to manage and scale your
-application’s routing structure.
+modular routing, allowing you to separate routes based on URL patterns into different modules. Each module generates its own routes file,
+making it easier to manage and scale your application’s routing structure.
 
-![routes example](https://github.com/user-attachments/assets/fd9b1736-9d3d-42f7-afd3-64b6c5eae5c1)
+![routes-example](./.github/images/routes-example.jpg)
 
 ## Installation
 
@@ -32,7 +31,8 @@ php artisan laroute:generate
 
 ## Usage
 
-The library includes the necessary `javascript` service to interpret the `JSON` routes, along with its corresponding `d.ts` type definitions
+The library includes the necessary `javascript` service to interpret the exported routes, along with its corresponding `d.ts` type
+definitions
 for `typescript`.
 
 > The location of the service is configured in the library option within the configuration file.
@@ -40,31 +40,31 @@ for `typescript`.
 ### Javascript / Typescript
 
 Once the service is exported to the location defined in the configuration file, you can easily create a new file and export the service
-creation by passing the JSON file containing the routes as a parameter.
+creation by passing the file containing the routes as a parameter.
 
 ```typescript
-import {createRouteService} from "./laroute";
-import apiConfig from "./api.json";
+import {RouteService} from "./laroute";
+import routes from "./api-routes.json";
 
-const apiRouteService = createRouteService(apiConfig);
+const apiRouteService = new RouteService({routes});
 ```
 
 With this, you’re ready to start.
 
 ```typescript
-const response = await fetch(apiRouteService.completeURI('store.products.lists'))
+const response = await fetch(apiRouteService.generateFullURL('store.products.lists'))
 const data = response.json();
 console.log(data)
 ```
 
 ### Service
 
-The route service provides three key methods to interact with the generated JSON routes:
+The route service provides three key methods to interact with the generated routes:
 
-- **completeURI(name, ?params)**: Generates a full URL, including any query string parameters.
+- **generateFullURL(name, ?params)**: Generates a full URL, including any query string parameters.
 
 ```typescript
-apiRouteService.completeURI('admin.products.create', {
+apiRouteService.generateFullURL('admin.products.create', {
     id: '80768395-4208-4fd7-ac60-c429717014ab',
     name: 'Notebook'
 })
@@ -72,10 +72,10 @@ apiRouteService.completeURI('admin.products.create', {
 
 > Returns `{host}/api/admin/products/80768395-4208-4fd7-ac60-c429717014ab?name=Notebook`
 
-- **cleanURI(name, ?params)**:Generates a full URL without any query string.
+- **createURLWithoutQuery(name, ?params)**:Generates a full URL without any query string.
 
 ```typescript
-apiRouteService.cleanURI('admin.products.update', {
+apiRouteService.createURLWithoutQuery('admin.products.update', {
     id: '80768395-4208-4fd7-ac60-c429717014ab',
     name: 'Notebook'
 })
@@ -149,7 +149,7 @@ For example, you could have a module for `/api/store` and another for `/api/admi
     'absolute' => true,
     'path'     => 'resources/routes',
   ],
-  ]
+]
 ```
 
 ## Features
