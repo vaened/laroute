@@ -1,0 +1,46 @@
+{
+  "store": {
+    "store.products.list": {
+      "host": "",
+      "uri": "store-name/api/store/products"
+    },
+    "store.cart.show": {
+      "host": "",
+      "uri": "store-name/api/store/cart"
+    },
+    "store.cart.add": {
+      "host": "",
+      "uri": "store-name/api/store/cart/{product_id}"
+    },
+    "store.cart.remove": {
+      "host": "",
+      "uri": "store-name/api/store/cart/{product_id}"
+    }
+  },
+  "admin": {
+    "admin.products.create": {
+      "host": "",
+      "uri": "dashboard/api/admin/products/{id}"
+    },
+    "admin.products.update": {
+      "host": "",
+      "uri": "dashboard/api/admin/products/{id}"
+    },
+    "admin.products.show": {
+      "host": "",
+      "uri": "dashboard/api/admin/products/{id}"
+    },
+    "admin.users.list": {
+      "host": "",
+      "uri": "dashboard/api/admin/users"
+    },
+    "admin.users.create": {
+      "host": "",
+      "uri": "dashboard/api/admin/users/{id}"
+    },
+    "admin.users.update": {
+      "host": "",
+      "uri": "dashboard/api/admin/users/{id}"
+    }
+  }
+}

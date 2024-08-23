@@ -1,0 +1,46 @@
+{
+  "store": {
+    "store.products.list": {
+      "host": "https://store.aplication.com",
+      "uri": "api/store/products"
+    },
+    "store.cart.show": {
+      "host": "https://store.aplication.com",
+      "uri": "api/store/cart"
+    },
+    "store.cart.add": {
+      "host": "https://store.aplication.com",
+      "uri": "api/store/cart/{product_id}"
+    },
+    "store.cart.remove": {
+      "host": "https://store.aplication.com",
+      "uri": "api/store/cart/{product_id}"
+    }
+  },
+  "admin": {
+    "admin.products.create": {
+      "host": "https://admin.aplication.com",
+      "uri": "api/admin/products/{id}"
+    },
+    "admin.products.update": {
+      "host": "https://admin.aplication.com",
+      "uri": "api/admin/products/{id}"
+    },
+    "admin.products.show": {
+      "host": "https://admin.aplication.com",
+      "uri": "api/admin/products/{id}"
+    },
+    "admin.users.list": {
+      "host": "https://admin.aplication.com",
+      "uri": "api/admin/users"
+    },
+    "admin.users.create": {
+      "host": "https://admin.aplication.com",
+      "uri": "api/admin/users/{id}"
+    },
+    "admin.users.update": {
+      "host": "https://admin.aplication.com",
+      "uri": "api/admin/users/{id}"
+    }
+  }
+}
