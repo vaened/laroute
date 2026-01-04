@@ -39,6 +39,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Single Output Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This configuration block defines the settings for the unified routes
+    | file. These settings are exclusively used when the 'split' option
+    | is set to false.
+    |
+    | name - The name of the generated file (without extension). Defaults
+    |        to 'api' if not specified.
+    | path - The destination directory for this specific file. If omitted,
+    |        it falls back to the global 'library' path defined above.
+    |
+    */
+    'single'  => [
+        'name' => 'api',
+        'path' => 'resources/routes',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Output Format
     |--------------------------------------------------------------------------
     |
@@ -130,6 +150,7 @@ return [
             |
             | This value determines the path where the generated routes file will be
             | stored. Typically, this will be within your resources' directory.
+            | If omitted, it falls back to the global 'library' path defined above.
             |
             */
             'path'     => 'resources/routes',
