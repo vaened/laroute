@@ -37,7 +37,7 @@ export class RouteService {
   }
 
   #getHostname(route) {
-    return this.#rootUrl || route.host;
+    return this.#rootUrl ?? route.host ?? "";
   }
 
   #replaceNamedParameters(uri, parameters) {
