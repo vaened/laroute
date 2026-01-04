@@ -11,24 +11,8 @@ use Vaened\Laroute\Items\FileType;
 
 final class LarouteConfig
 {
-    private static array $singleFileDefaultConfig = [];
-
     public function __construct(private readonly array $config)
     {
-        self::$singleFileDefaultConfig = [
-            'name' => 'api-routes',
-            'path' => $this->libraryPath(),
-        ];
-    }
-
-    public static function setSingleFileDefaultModuleName(string $name): void
-    {
-        self::$singleFileDefaultConfig['name'] = $name;
-    }
-
-    public static function setSingleFileDefaultOutputPath(string $path): void
-    {
-        self::$singleFileDefaultConfig['path'] = $path;
     }
 
     public function libraryPath(): string
@@ -58,11 +42,11 @@ final class LarouteConfig
 
     public function defaultSingleFileModuleName(): string
     {
-        return self::$singleFileDefaultConfig['name'];
+        return $this->config['single']['name'] ?? 'api';
     }
 
     public function defaultSingleFileOutputPath(): string
     {
-        return self::$singleFileDefaultConfig['path'];
+        return $this->config['single']['path'] ?? $this->libraryPath();
     }
 }
