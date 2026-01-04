@@ -27,9 +27,9 @@ readonly class Route
         return $this->name;
     }
 
-    public function host(): string
+    public function host(): ?string
     {
-        return $this->absolute ? Utils::removeForwardSlashes($this->host ?? $this->rootUrl) : '';
+        return $this->absolute ? Utils::removeForwardSlashes($this->host ?? $this->rootUrl) : null;
     }
 
     public function uri(): string

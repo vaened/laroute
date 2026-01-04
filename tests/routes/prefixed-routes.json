@@ -1,45 +1,45 @@
 {
   "store": {
     "store.products.list": {
-      "host": "",
+      "host": null,
       "uri": "store-name/api/store/products"
     },
     "store.cart.show": {
-      "host": "",
+      "host": null,
       "uri": "store-name/api/store/cart"
     },
     "store.cart.add": {
-      "host": "",
+      "host": null,
       "uri": "store-name/api/store/cart/{product_id}"
     },
     "store.cart.remove": {
-      "host": "",
+      "host": null,
       "uri": "store-name/api/store/cart/{product_id}"
     }
   },
   "admin": {
     "admin.products.create": {
-      "host": "",
+      "host": null,
       "uri": "dashboard/api/admin/products/{id}"
     },
     "admin.products.update": {
-      "host": "",
+      "host": null,
       "uri": "dashboard/api/admin/products/{id}"
     },
     "admin.products.show": {
-      "host": "",
+      "host": null,
       "uri": "dashboard/api/admin/products/{id}"
     },
     "admin.users.list": {
-      "host": "",
+      "host": null,
       "uri": "dashboard/api/admin/users"
     },
     "admin.users.create": {
-      "host": "",
+      "host": null,
       "uri": "dashboard/api/admin/users/{id}"
     },
     "admin.users.update": {
-      "host": "",
+      "host": null,
       "uri": "dashboard/api/admin/users/{id}"
     }
   }
