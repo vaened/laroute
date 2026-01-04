@@ -8,7 +8,7 @@ export class RouteService {
   }
 
   has(name) {
-    return this.#routes.some((route) => route.name === name);
+    return Object.hasOwn(this.#routes, name);
   }
 
   createURLWithoutQuery(name, parameters) {
