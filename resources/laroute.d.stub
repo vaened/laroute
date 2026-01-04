@@ -14,7 +14,7 @@ export interface LarouteConfig {
   routes: Record<Name, Route>;
 }
 
-export type Parameters = Record<string, any>;
+export type Parameters = Record<string, unknown>;
 
 export class RouteService<RouteName extends Name> {
   constructor(config: LarouteConfig);
