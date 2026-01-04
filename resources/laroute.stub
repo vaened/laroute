@@ -29,11 +29,11 @@ export class RouteService {
   }
 
   #find(name) {
-    const route = this.#routes[name] ?? undefined;
-    if (route === undefined) {
+    if (!this.has(name)) {
       throw new Error(`Not found route: ${name}`);
     }
-    return route;
+
+    return this.#routes[name];
   }
 
   #getHostname(route) {
