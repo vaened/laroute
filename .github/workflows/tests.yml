@@ -6,17 +6,35 @@ on:
 
 jobs:
   tests:
-    name: PHP ${{ matrix.php }} with Laravel ${{ matrix.laravel }}
+    name: PHP ${{ matrix.php }}; Laravel ${{ matrix.laravel }}
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        php: [ '8.2', '8.3' ]
-        laravel: [ '11', '12' ]
+        include:
+          - php: '8.2'
+            laravel: '11'
+            composer_no_blocking: true
+          - php: '8.3'
+            laravel: '11'
+            composer_no_blocking: true
+          - php: '8.4'
+            laravel: '11'
+            composer_no_blocking: true
+          - php: '8.2'
+            laravel: '12'
+          - php: '8.3'
+            laravel: '12'
+          - php: '8.4'
+            laravel: '12'
+          - php: '8.3'
+            laravel: '13'
+          - php: '8.4'
+            laravel: '13'
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -40,7 +58,7 @@ jobs:
         with:
           timeout_minutes: 5
           max_attempts: 5
-          command: composer update --no-interaction --no-progress --ignore-platform-req=php
+          command: composer update --no-interaction --no-progress ${{ matrix.composer_no_blocking && '--no-blocking' || '' }}
 
       - name: Run tests for Laravel ${{ matrix.laravel }}
         run: vendor/bin/phpunit
